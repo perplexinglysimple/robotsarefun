@@ -1,0 +1,48 @@
+How to build
+
+catkin_make
+source devel/setup.bash
+
+#Set webots home
+export WEBOTS_HOME=/usr/local/webots
+
+#If you are running 20.04 you should look at this
+#https://answers.ros.org/question/382842/i-am-getting-error-while-loading-shared-libraries-libboost_systemso1651/
+#export webots_home to this location
+
+#To get tiago running
+#Install ros
+#run catkin_make && source devel/setup.bash
+
+roslaunch webots_ros tiago.launch
+
+#This already has a hand and moveit controller. I am trying to break the controller. Have to edit moveIt so build times will increase
+#Parmeters server has an odom loaded looking at changing that
+#Topics I care about
+#Arm command stuff
+/arm_controller/command
+/arm_controller/follow_joint_trajectory/cancel
+/arm_controller/follow_joint_trajectory/feedback
+/arm_controller/follow_joint_trajectory/goal
+/arm_controller/follow_joint_trajectory/result
+/arm_controller/follow_joint_trajectory/status
+/arm_controller/state
+#Things I care about for feedback
+/tiago/arm_1_joint/torque_feedback
+/tiago/arm_1_joint_sensor/value
+/tiago/arm_2_joint/torque_feedback
+/tiago/arm_2_joint_sensor/value
+/tiago/arm_3_joint/torque_feedback
+/tiago/arm_3_joint_sensor/value
+/tiago/arm_4_joint/torque_feedback
+/tiago/arm_4_joint_sensor/value
+/tiago/arm_5_joint/torque_feedback
+/tiago/arm_5_joint_sensor/value
+/tiago/arm_6_joint/torque_feedback
+/tiago/arm_6_joint_sensor/value
+/tiago/arm_7_joint/torque_feedback
+/tiago/arm_7_joint_sensor/value
+/tiago/gripper_left_finger_joint/force_feedback
+/tiago/gripper_left_finger_joint_sensor/value
+/tiago/gripper_right_finger_joint/force_feedback
+/tiago/gripper_right_finger_joint_sensor/value
