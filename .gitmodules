@@ -1,0 +1,3 @@
+[submodule "src/webots_ros"]
+	path = src/webots_ros
+	url = https://github.com/cyberbotics/webots_ros.git
