@@ -1,3 +1,6 @@
 [submodule "src/webots_ros"]
 	path = src/webots_ros
 	url = https://github.com/cyberbotics/webots_ros.git
+[submodule "src/geometric_shapes"]
+	path = src/geometric_shapes
+	url = https://github.com/ros-planning/geometric_shapes.git
