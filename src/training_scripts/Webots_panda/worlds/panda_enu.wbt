@@ -1,0 +1,21 @@
+#VRML_SIM R2021b utf8
+WorldInfo {
+}
+Viewpoint {
+  orientation 0.990655662996554 0.070788810075609 0.116577449538656 1.180575633517418
+  position 0.3753238747602791 -2.403124010704108 1.579620021746243
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+Floor {
+  rotation 1 0 0 1.5707963267948966
+  size 4 4
+  appearance ThreadMetalPlate {
+  }
+}
+Panda {
+  rotation 1 0 0 0
+  controller "panda_controller"
+}
