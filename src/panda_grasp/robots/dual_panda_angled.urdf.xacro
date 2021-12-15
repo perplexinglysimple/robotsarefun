@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda">
+  <xacro:arg name="arm_id_1" default="panda_1" />
+
+  <xacro:include filename="$(find double_panda)/robots/panda_arm.xacro"/>
+  <xacro:include filename="$(find double_panda)/robots/hand.xacro"/>
+
+  <!-- box shaped table as base for the 2 Pandas -->
+  <link name="table">
+    <visual>
+	    <origin xyz="0 0.8 -0.5" rpy="0 0 0"/>
+      <geometry>
+        <box size="1.5 2 1" />
+      </geometry>
+      <material name="White">
+        <color rgba="1.0 1.0 1.0 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0.8 -0.5" rpy="0 0 0"/>
+      <geometry>
+        <box size="1.5 2 1" />
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- arm -->
+  <xacro:panda_arm arm_id="$(arg arm_id_1)" connected_to="table"  xyz="0 0 0" rpy="0 0 0" safety_distance="0.03"/>
+  <xacro:hand ns="$(arg arm_id_1)" rpy="0 0 ${-pi/4}" connected_to="$(arg arm_id_1)_link8" safety_distance="0.03"/>
+</robot>
