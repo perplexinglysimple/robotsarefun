@@ -1,30 +1,9 @@
 <?xml version="1.0"?>
 <launch>
+  <arg name="auto-close" default="false" doc="Startup mode"/>
+  <param name="robot_description" command="$(find xacro)/xacro $(find training_scripts)/urdf/panda_enu.urdf.xacro"/>
 
-  <!-- ros_control -->
-  <rosparam>
-    arm_controller:
-      type: position_controllers/JointTrajectoryController
-      joints:
-        - arm_1_joint
-        - arm_2_joint
-        - arm_3_joint
-        - arm_4_joint
-        - arm_5_joint
-        - arm_6_joint
-        - arm_7_joint
-      constraints:
-        stopped_velocity_tolerance: 1
-    joint_controller:
-      type: joint_state_controller/JointStateController
-      publish_rate: 50
-    diff_drive_controller:
-      type: diff_drive_controller/DiffDriveController
-      left_wheel: wheel_left_joint
-      right_wheel: wheel_right_joint
-      pose_covariance_diagonal: [0.001, 0.001, 1000000.0, 1000000.0, 1000000.0, 1000.0]
-      twist_covariance_diagonal: [0.001, 0.001, 1000000.0, 1000000.0, 1000000.0, 1000.0]
-  </rosparam>
+  <!-- ros_control -->	
   <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="arm_controller joint_controller diff_drive_controller" />
 
   <!-- Webots -->
@@ -34,8 +13,10 @@
     <arg name="no_gui" value="$(arg no_gui)"/>
     <arg name="world" value="$(find training_scripts)Webots_panda/worlds/panda_enu.wbt"/>
   </include>
-  <arg name="auto_close" default="false" doc="Startup mode"/>
 
   <!-- robot_state_publisher -->
-  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" respawn="true" respawn_delay="5" output="log" />
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="50.0" />
+    <param name="tf_prefix" type="string" value="" />
+  </node>
 </launch>
