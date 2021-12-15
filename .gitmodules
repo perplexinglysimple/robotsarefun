@@ -4,3 +4,24 @@
 [submodule "src/geometric_shapes"]
 	path = src/geometric_shapes
 	url = https://github.com/ros-planning/geometric_shapes.git
+[submodule "src/moveit"]
+	path = src/moveit
+	url = https://github.com/ros-planning/moveit.git
+[submodule "src/moveit_resources"]
+	path = src/moveit_resources
+	url = https://github.com/ros-planning/moveit_resources.git
+[submodule "src/moveit_visual_tools"]
+	path = src/moveit_visual_tools
+	url = https://github.com/ros-planning/moveit_visual_tools.git
+[submodule "src/rviz_visual_tools"]
+	path = src/rviz_visual_tools
+	url = https://github.com/PickNikRobotics/rviz_visual_tools
+[submodule "src/moveit_msgs"]
+	path = src/moveit_msgs
+	url = https://github.com/ros-planning/moveit_msgs.git
+[submodule "src/moveit_tutorials"]
+	path = src/moveit_tutorials
+	url = https://github.com/ros-planning/moveit_tutorials.git
+[submodule "src/panda_moveit_config"]
+	path = src/panda_moveit_config
+	url = https://github.com/ros-planning/panda_moveit_config.git
