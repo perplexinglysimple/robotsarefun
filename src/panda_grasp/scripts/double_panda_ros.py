@@ -19,12 +19,13 @@
 import argparse
 import rospy
 
-from controller import Robot
+#Don't be controlling the robot from SUPERVISOR!!!!!!
+from controller import Robot, Supervisor
 from joint_state_publisher import JointStatePublisher
 from trajectory_follower import TrajectoryFollower
 from gripper_command import GripperCommander
 from rosgraph_msgs.msg import Clock
-
+from geometry_msgs.msg import Pose, Point
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--node-name', dest='nodeName', default='double_panda', help='Specifies the name of the node.')
@@ -36,17 +37,13 @@ jointPrefix = rospy.get_param('prefix', '')
 if jointPrefix:
     print('Setting prefix to %s' % jointPrefix)
 
-robot = Robot()
+robot = Supervisor()
 nodeName = arguments.nodeName + '/' if arguments.nodeName != 'ur_driver' else ''
 jointStatePublisher = JointStatePublisher(robot, jointPrefix, nodeName)
 gripperCommander1 = GripperCommander(robot, jointStatePublisher, jointPrefix, 'panda_1')
-gripperCommander2 = GripperCommander(robot, jointStatePublisher, jointPrefix, 'panda_2')
 trajectoryFollower1 = TrajectoryFollower(robot, jointStatePublisher, jointPrefix, 'panda_1')
-trajectoryFollower2 = TrajectoryFollower(robot, jointStatePublisher, jointPrefix, 'panda_2')
 trajectoryFollower1.start()
-trajectoryFollower2.start()
 gripperCommander1.start()
-gripperCommander2.start()
 init_pos = {
     "panda_1_joint1": 0.000,
     "panda_1_joint2": -0.785,
@@ -59,23 +56,27 @@ init_pos = {
 for jt in init_pos:
     robot.getMotor(jt).setPosition(init_pos[jt])
 
+eePub = rospy.Publisher('panda_1_ee', Pose, queue_size=1)
 # we want to use simulation time for ROS
 clockPublisher = rospy.Publisher('clock', Clock, queue_size=1)
 if not rospy.get_param('use_sim_time', False):
     rospy.logwarn('use_sim_time is not set!')
 
 timestep = int(robot.getBasicTimeStep())
-
 while robot.step(timestep) != -1 and not rospy.is_shutdown():
     jointStatePublisher.publish()
     trajectoryFollower1.update()
-    trajectoryFollower2.update()
     gripperCommander1.update()
-    gripperCommander2.update()
     # pulish simulation clock
+    ptemp = Point()
+    ptemp.x = robot.getFromDef('PANDA_1_HAND').getPosition()[0]
+    ptemp.y = robot.getFromDef('PANDA_1_HAND').getPosition()[1]
+    ptemp.z = robot.getFromDef('PANDA_1_HAND').getPosition()[2]
+    eemsg = Pose(p/panda_1_eeosition=ptemp)
     msg = Clock()
     time = robot.getTime()
     msg.clock.secs = int(time)
     # round prevents precision issues that can cause problems with ROS timers
     msg.clock.nsecs = round(1000 * (time - msg.clock.secs)) * 1.0e+6
     clockPublisher.publish(msg)
+    eePub.publish(eemsg)
