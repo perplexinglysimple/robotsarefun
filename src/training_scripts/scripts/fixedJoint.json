@@ -1,0 +1,9 @@
+{
+  "joint_1":{"sub":"/limited_joint1", "pub":"/panda_1_joint1", "Amin":0, "Amax":1, "Tmin":0, "Tmax":0, "ftype":"None"},
+  "joint_2":{"sub":"/limited_joint2", "pub":"/panda_1_joint2", "Amin":0, "Amax":1, "Tmin":0, "Tmax":0, "ftype":"None"},
+  "joint_3":{"sub":"/limited_joint3", "pub":"/panda_1_joint3", "Amin":1, "Amax":1, "Tmin":0, "Tmax":0, "ftype":"fixed"},
+  "joint_4":{"sub":"/limited_joint4", "pub":"/panda_1_joint4", "Amin":0, "Amax":1, "Tmin":0, "Tmax":0, "ftype":"None"},
+  "joint_5":{"sub":"/limited_joint5", "pub":"/panda_1_joint5", "Amin":-0.9, "Amax":-0.9, "Tmin":0, "Tmax":0, "ftype":"fixed"},
+  "joint_6":{"sub":"/limited_joint6", "pub":"/panda_1_joint6", "Amin":0, "Amax":1, "Tmin":0, "Tmax":0, "ftype":"None"},
+  "joint_7":{"sub":"/limited_joint7", "pub":"/panda_1_joint7", "Amin":0, "Amax":1, "Tmin":0, "Tmax":0, "ftype":"None"}
+}
