@@ -1,14 +1,14 @@
-import rospy
 import json
-import numpy as np
 from sensor_msgs.msg import JointState
-from std_msgs.msg import Float64
-import sys
-import copy
 import rospy
 import moveit_commander
-import moveit_msgs.msg
-import geometry_msgs.msg
+
+
+def loadJson(filename):
+    with open(filename) as f:
+        data = json.load(f)
+    return data
+
 
 class PublishJangles:
     def __init__(self):
@@ -27,13 +27,8 @@ class PublishJangles:
         group_name = "panda_1_arm"
         self.move_group = moveit_commander.MoveGroupCommander(group_name)
 
-    def loadJson(self, filename):
-        with open(filename) as f:
-            data = json.load(f)
-        return data
-
-    def setup_sub_pub_pairs(self, sub_name, pub_name):
-        if not pub_name in self.publishers.keys():
+    def setup_sub_pub_pairs(self, pub_name):
+        if pub_name not in self.publishers.keys():
             self.publishers[pub_name] = rospy.Publisher(pub_name, JointState, queue_size=1)
 
     def setup_new_limits(self, data):
@@ -42,7 +37,7 @@ class PublishJangles:
         joint_names = data.keys()
         for i in joint_names:
             i = data[i]
-            sub_name = i['sub']
+            # sub_name = i['sub']
             pub_name = i['pub']
             joint_limit_angle_min = i['Amin']
             joint_limit_angle_max = i['Amax']
@@ -52,7 +47,7 @@ class PublishJangles:
             self.jointInfo[pub_name] = {'Amin': joint_limit_angle_min, 'Amax': joint_limit_angle_max,
                                         'Tmin': joint_limit_torque_min, 'Tmax': joint_limit_torque_max,
                                         'FailureClass': failure_type}
-            self.setup_sub_pub_pairs(sub_name, pub_name)
+            self.setup_sub_pub_pairs(pub_name)
 
     def set_none_limits(self, filename):
         with open(filename) as f:
@@ -105,7 +100,7 @@ class PublishJangles:
     def publish_ljoint_angles(self):
         state_1 = [1.2, -0.5, 1.5, -1., 0.789, 2., 0.75]
         state_2 = [-1.2, .5, -.3, -2., -1.2, 1.5, -.75]
-        self.setup_new_limits(self.loadJson('fixedJoint.json'))
+        self.setup_new_limits(loadJson('fixedJoint.json'))
         rospy.loginfo("Joints Limited")
         rospy.loginfo("New Joint Limits:")
         val_log = []
@@ -166,28 +161,6 @@ class PublishJangles:
                 self.state = "LIMITED"
                 self.publish_ujoint_angles()
                 break
-
-    # def callback(self, msg, pub_name):
-    #     jointDict = self.jointInfo[pub_name]
-    #     noneDict = self.noneInfo[pub_name]
-    #     # This can be changed to fit failure types. Just dont know what to do here tbh.
-    #     failure_type = jointDict['FailureClass']
-    #     rospy.logdebug('Initial msg')
-    #     rospy.loginfo(pub_name)
-    #     rospy.loginfo(msg)
-    #     rospy.loginfo(Float64(msg.position[0]))
-    #     if failure_type == 'angle' or failure_type == 'both':
-    #         msg.position = (float(np.clip(msg.position[0], jointDict['Amin'], jointDict['Amax'])),)
-    #     elif failure_type == 'fixed':
-    #         msg.position = (float(np.clip(msg.position[0], jointDict['Amin'], jointDict['Amax'])),)
-    #     elif failure_type == 'None':
-    #         msg.position = (float(np.clip(msg.position[0], noneDict['Amin'], noneDict['Amax'])),)
-    #     # if failure_type == 'torque' or failure_type == 'both':
-    #     #    msg.torque = np.clip(msg.angle, jointDict['Tmin'], jointDict['Tmax'])
-    #     rospy.logdebug('Limited msg')
-    #     rospy.logdebug(pub_name)
-    #     rospy.logdebug(msg)
-    #     self.publishers[pub_name].publish(msg)
 
 
 if __name__ == "__main__":

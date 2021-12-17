@@ -68,11 +68,15 @@ while robot.step(timestep) != -1 and not rospy.is_shutdown():
     trajectoryFollower1.update()
     gripperCommander1.update()
     # pulish simulation clock
-    ptemp = Point()
-    ptemp.x = robot.getFromDef('PANDA_1_HAND').getPosition()[0]
-    ptemp.y = robot.getFromDef('PANDA_1_HAND').getPosition()[1]
-    ptemp.z = robot.getFromDef('PANDA_1_HAND').getPosition()[2]
-    eemsg = Pose(p/panda_1_eeosition=ptemp)
+    ptemp = Pose()
+    ptemp.position.x = robot.getFromDef('PANDA_1_HAND').getPosition()[0]
+    ptemp.position.y = robot.getFromDef('PANDA_1_HAND').getPosition()[1]
+    ptemp.position.z = robot.getFromDef('PANDA_1_HAND').getPosition()[2]
+    ptemp.orientation.x = robot.getFromDef('PANDA_1_HAND').getOrientation()[0]
+    ptemp.orientation.y = robot.getFromDef('PANDA_1_HAND').getOrientation()[1]
+    ptemp.orientation.z = robot.getFromDef('PANDA_1_HAND').getOrientation()[2]
+    ptemp.orientation.w = robot.getFromDef('PANDA_1_HAND').getOrientation()[3]
+    eemsg = ptemp
     msg = Clock()
     time = robot.getTime()
     msg.clock.secs = int(time)

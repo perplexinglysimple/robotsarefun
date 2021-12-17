@@ -92,8 +92,8 @@ if __name__ == "__main__":
     rospy.init_node('robot_limiter', anonymous=True)
     rospy.loginfo("initing the joint limiting class")
     test = LimitingJointClass()
-    # test.setupJointLimits('testJointLimits.json')
-    test.setupJointLimits('fixedJoint.json')
+    test.setupJointLimits('testJointLimits.json')
+    # test.setupJointLimits('fixedJoint.json')
     test.set_none_limits('unlimited_joints.json')
     rospy.loginfo("done")
     # You can use a rosrate here or something to wait to set new limits.
